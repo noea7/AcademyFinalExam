@@ -42,7 +42,7 @@ function Navigation() {
                   </Link>
                 </div>
                 <div className="nav-item">
-                  <Link to="/repairer" className="nav-link">
+                  <Link to="/repairman" className="nav-link">
                     Meistrai
                   </Link>
                 </div>
