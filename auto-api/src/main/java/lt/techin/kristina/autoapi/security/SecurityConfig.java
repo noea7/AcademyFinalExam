@@ -28,7 +28,7 @@ public class SecurityConfig {
                 .csrf().disable()
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests(authorizeRequests -> authorizeRequests
-                                .antMatchers("/api/v1/login").permitAll()
+                                .antMatchers("/api/v1/login", "/api/v1/register").permitAll()
                                 .antMatchers("/", "/error", "/csrf", "/swagger-ui.html", "/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs", "/v3/api-docs/**").permitAll()
                                 .anyRequest().authenticated()
                 )

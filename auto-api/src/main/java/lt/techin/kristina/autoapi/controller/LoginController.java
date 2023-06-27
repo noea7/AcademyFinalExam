@@ -1,5 +1,6 @@
 package lt.techin.kristina.autoapi.controller;
 
+import lt.techin.kristina.autoapi.exception.AutoserviceValidationException;
 import lt.techin.kristina.autoapi.model.User;
 import lt.techin.kristina.autoapi.model.UserCredentials;
 import lt.techin.kristina.autoapi.repository.UserRepository;
@@ -32,5 +33,17 @@ public class LoginController {
         } else {
             return ResponseEntity.badRequest().body("Invalid credentials");
         }
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<User> register(@RequestBody UserCredentials credentials) {
+        if (userRepository.existsByUsernameIgnoreCase(credentials.getUsername())) {
+            throw new AutoserviceValidationException("Username must be unique");
+        }
+        User user = new User();
+        user.setUsername(credentials.getUsername());
+        user.setPassword(passwordEncoder.encode(credentials.getPassword()));
+        user.setRole("user");
+        return ResponseEntity.ok(userRepository.save(user));
     }
 }

@@ -2,8 +2,10 @@ package lt.techin.kristina.autoapi.service;
 
 import lt.techin.kristina.autoapi.exception.AutoserviceValidationException;
 import lt.techin.kristina.autoapi.model.Autoservice;
+import lt.techin.kristina.autoapi.model.Rating;
 import lt.techin.kristina.autoapi.model.Repairman;
 import lt.techin.kristina.autoapi.repository.AutoserviceRepository;
+import lt.techin.kristina.autoapi.repository.RatingRepository;
 import lt.techin.kristina.autoapi.repository.RepairmanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,10 @@ public class RepairmanService {
 
     @Autowired
     private AutoserviceRepository autoserviceRepository;
+
+    @Autowired
+    private RatingRepository ratingRepository;
+
 
     public List<Repairman> getAll() {
         return repairmanRepository.findAll();
@@ -75,6 +81,8 @@ public class RepairmanService {
         Repairman repairmanToDelete = repairmanRepository.findById(repairmanId)
                 .orElseThrow(() -> new AutoserviceValidationException("Repairman with id " +
                         repairmanId + "does not exist"));
+        List<Rating> existingRatings = ratingRepository.findAllByRepairmanId(repairmanId);
+        ratingRepository.deleteAll(existingRatings);
         repairmanRepository.delete(repairmanToDelete);
     }
 }
