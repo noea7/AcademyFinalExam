@@ -2,7 +2,9 @@ package lt.techin.kristina.autoapi.service;
 
 import lt.techin.kristina.autoapi.exception.AutoserviceValidationException;
 import lt.techin.kristina.autoapi.model.Autoservice;
+import lt.techin.kristina.autoapi.model.Repairman;
 import lt.techin.kristina.autoapi.repository.AutoserviceRepository;
+import lt.techin.kristina.autoapi.repository.RepairmanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,9 @@ public class AutoserviceService {
 
     @Autowired
     private AutoserviceRepository autoserviceRepository;
+
+    @Autowired
+    private RepairmanRepository repairmanRepository;
 
 
     public Autoservice addAutoservice(Autoservice autoservice) {
@@ -32,6 +37,11 @@ public class AutoserviceService {
         Autoservice autoserviceToDelete = autoserviceRepository.findById(autoserviceId)
                 .orElseThrow(() -> new AutoserviceValidationException("Autoservice with id " +
                         autoserviceId + "does not exist"));
+        List<Repairman> affectedRepairmen = repairmanRepository.findAllByAutoserviceId(autoserviceId);
+        if (affectedRepairmen.size() > 0) {
+            throw new AutoserviceValidationException
+                    ("Autoservice cannot be deleted as it has repairmen. Please remove/update affected repairmen first");
+        }
         autoserviceRepository.delete(autoserviceToDelete);
     }
 

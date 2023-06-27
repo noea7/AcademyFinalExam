@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/autoservice")
 public class AutoserviceController {
 
     @Autowired
@@ -35,7 +35,7 @@ public class AutoserviceController {
     }
 
     @PatchMapping("/update/{autoserviceId}")
-    public ResponseEntity<Autoservice> updateModule(@PathVariable Long autoserviceId, @Valid @RequestBody AutoserviceDto autoserviceDto) {
+    public ResponseEntity<Autoservice> updateAutoservice(@PathVariable Long autoserviceId, @Valid @RequestBody AutoserviceDto autoserviceDto) {
         return ResponseEntity.ok(autoserviceService.updateAutoservice(autoserviceId, AutoserviceMapper.toAutoservice(autoserviceDto)));
     }
 
